@@ -1,0 +1,46 @@
+
+// 从文件读取PPM图片
+void ppm_load(char* filename, unsigned char* out_data, int* w, int* h)
+{
+    char header[1024];
+    FILE* fp = NULL;
+    int line = 0;
+ 
+    fp = fopen(filename, "rb");
+ 
+    // 读取图片格式(例如:"P6")
+    // 高宽在第二行非注释数据
+    while(line < 2){    
+        fgets(header, 1024, fp);
+        if(header[0] != '#'){
+            ++line;
+        }
+    }
+    // 读取宽高
+    sscanf(header,"%d %d\n", w, h);
+ 
+    // 获取最大像素值
+    fgets(header, 20, fp);
+ 
+    // get rgb data
+    fread(*data, (*w)*(*h)*3, 1, fp);
+ 
+    fclose(fp);
+}
+ 
+// 写ppm图像到文件
+void ppm_save(char* filename, unsigned char* data, int w, int h)
+{
+    FILE* fp;
+    char header[20];
+ 
+    fp = fopen(filename, "wb");
+ 
+    // 写图片格式、宽高、最大像素值
+    fprintf(fp,"P6\n%d %d\n255\n",w,h);
+ 
+    // 写RGB数据
+    fwrite(data, w*h*3, 1, fp);
+ 
+    fclose(fp);
+}

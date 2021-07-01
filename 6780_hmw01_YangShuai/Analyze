@@ -1,0 +1,12 @@
+The CPU somehow run faster(There mimght be a time GPU run faster,but I just cannot figure out 
+which part goes wrong...)
+
+The accurate is not as great as I supposed, in which there is a difference around 900k.
+
+If the array goes longer, the speedup might be more obvious with GPU function.Besides, it takes 
+time to allocate data to the shared memory for each block and then copy it back to the variety 
+in host part, and set room for various parameters we have here.In other words, data transform takes 
+some time.Unlike the Matrix, although we could seperate it into many blocks, we have to do the sum 
+of each block after that, which also take some time and that part could not be accelerated.Accoding 
+to my study, the more thread we have the faster it would be, but it doesnot make much different.
+Neither does the number of block.

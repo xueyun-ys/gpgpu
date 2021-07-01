@@ -1,0 +1,28 @@
+Shuai Yang
+C79039336
+
+The idea is basically about accelerating the code for computer graphics image processing.At first I was trying to do something pretty comprehensive. I rewrote the code from another class and accelerate the part in loops for fourier space image filtering process but there is a library openIMGIO I cannot get in to compile with nvcc.Finally I dive in something much easier.I have learned the Julia in another class but it is done in a slightly diifferent way, so I want to play with it and do a cross-course program for this.
+
+
+The work was used to be done sequentially. In the process a point should be first generated according a complex number and a start point, after looping the specific times.Then we fetch the magnitude of complex number and use it divided by 2 to get a value.With that we can look up a LUT and get a color from it. LUT is a look up table which contains many colors arranged in a list.The real part and the imaginary part would be the x, y values of positions but here we just store the computed value into the pixel related with that thread.The use of LUT would be the different part with Julia method in lecture.
+
+
+In order to implment it, first I need to analysis the computaion massive part and here as we use each pixel to generate color and set back to the pixel, not like the one generating a new point and set color. It could be accelarated if we do in this way because each single pixel would be used to generate a new color.As we have many pixels we want to o it simutaneously.We just need one block per grid with enough threads each taking care of a pixel.There should be just one thread for each block, and the block number in a grid depends on the size of image in order that each thread can deal with a single pixel at the same time.
+
+
+For implement I refer the Julia code and use the lib in common file.I create a kernel for the new point position evaluation part, after which three different color calculation functions will be called.event_record functions are used to explicitly show how much the performance gains.LUT is constructed as a struct to look up colors.
+
+
+Analysis&result:
+
+CPU version: 5033.41
+GPU version: 149.106
+GPU version seems to be about 35 times faster.The result remains the same.Because we calculate color for each color, so the part inside Julia function is really heavy and thus all pixels execute together would dramatically bring down the time. 
+
+
+
+
+references:
+ NVIDIA Corporation code: Julia.
+ Letures and notes from 6780 GPGPU & 6040 CGI
+ libraries: common files from class

@@ -1,0 +1,19 @@
+For the cpu code version
+
+To complile:
+sh run julia_cpu.cu
+To run it:
+./a.out
+run time:149.106
+
+For the gpu code version
+
+To complile:
+sh run2 julia_gpu.cu
+To run it:
+./a.out
+run time:5033.41
+
+
+The expected result is a bit like the one from Julia code.There should be a window poping up and show you a fractal shape with many colors.The iamge should be 1000*1000.The cpu and gpu versions should have the same result but definitely different running time.No matter how many times the code is run, the result should not be changed.
+
